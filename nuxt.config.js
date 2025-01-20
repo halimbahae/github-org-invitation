@@ -1,55 +1,81 @@
 export default {
-  // Global page headers: https://go.nuxtjs.dev/config-head
+  // Configuration de base
+  target: 'server',
+  ssr: true,
+  
+  // En-tête HTML
   head: {
-    title: `Invitation to ${process.env.ORG_NAME ? (process.env.ORG_NAME[0].toUpperCase() + process.env.ORG_NAME.slice(1)) : 'Nuxt.js'}`,
-    htmlAttrs: {
-      lang: "en"
-    },
+    title: 'GitHub Organization Invitation',
     meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" },
-      { name: "format-detection", content: "telephone=no" }
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: 'Invitation tool for GitHub organizations' }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: `${process.env.FAVICON_URL ?? "/favicon.ico"}` }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: process.env.FAVICON_URL }
+    ]
   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
+  // CSS global
   css: [],
 
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
+  // Plugins
   plugins: [],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
+  // Composants Auto-import
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
+  // Modules de développement
   buildModules: [
-    // https://go.nuxtjs.dev/tailwindcss
-    "@nuxtjs/tailwindcss"
+    '@nuxtjs/tailwindcss'
   ],
 
-  /*
-   ** Nuxt.js modules
-   */
+  // Modules
   modules: [
-    // Doc: https://http.nuxtjs.org
-    "@nuxt/http"
+    '@nuxt/http'
   ],
 
+  // Configuration HTTP
   http: {
-    browserBaseURL: process.env.NODE_ENV === "production" ? process.env.BASE_URL : `http://localhost:3000`,
+    baseURL: process.env.BASE_URL || 'http://localhost:3000'
   },
 
-  /*
-   ** Server Middleware
-   */
+  // Middleware serveur
   serverMiddleware: [
-    { path: '/api', handler: '~/api/index.js' },
+    { path: '/api', handler: '~/server/api/index.js' }
   ],
 
+  // Configuration Tailwind
+  tailwindcss: {
+    config: {
+      theme: {
+        extend: {
+          colors: {
+            background: process.env.BACKGROUND_COLOR || '#0f172a',
+            accent: process.env.ACCENT_COLOR || '#3b82f6'
+          }
+        }
+      }
+    }
+  },
+
+  // Configuration de build
+  build: {
+    transpile: [
+      '@octokit/rest'
+    ]
+  },
+
+  // Variables d'environnement publiques
   publicRuntimeConfig: {
+    baseURL: process.env.BASE_URL || 'http://localhost:3000',
     orgName: process.env.ORG_NAME,
-    enableDiscord: process.env.DISCORD_TOKEN ? "true" : "false"
+    teamName: process.env.TEAM_NAME,
+    faviconURL: process.env.FAVICON_URL
+  },
+
+  // Variables d'environnement privées
+  privateRuntimeConfig: {
+    githubToken: process.env.GITHUB_ACCESS_TOKEN
   }
-};
+}
