@@ -45,7 +45,7 @@ This project is built with **Nuxt SSR**. All the API calls to the GitHub API are
 To run this project locally, you can follow these simple steps
 
 ```sh
-$ git clone git@github.com:christyjacob4/github-org-invite.git
+$ git clone git@github.com:halimbahae/github-org-invitation.git
 $ cd github-org-invite
 $ cp .env.example .env
 ```
